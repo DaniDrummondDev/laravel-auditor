@@ -1,0 +1,7 @@
+.venv/*
+.venv/bin/*
+.venv/include/*
+.venv/lib/*
+.venv/lib64/*
+.claude/
+pyvenv.cfg

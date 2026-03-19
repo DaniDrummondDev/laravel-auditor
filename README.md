@@ -21,29 +21,56 @@ Auditor arquitetural para qualquer projeto Laravel. Funciona de **MVC bagunçado
 
 ## 🚀 Instalação
 
-### 1. Instalar dependências
+### 1. Clonar o repositório
 
 ```bash
+git clone https://github.com/seu-usuario/laravel-auditor.git
 cd laravel-auditor
-pip install -e . --break-system-packages
 ```
 
-### 2. Registrar no Claude Code (global — funciona em qualquer projeto)
+### 2. Criar e ativar o ambiente virtual
 
 ```bash
-claude mcp add --scope user laravel-auditor python -m laravel_auditor
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-> **ANTHROPIC_API_KEY** precisa estar no ambiente para os AI insights.
-> Sem ela, o auditor ainda funciona (análise estática), mas sem o roadmap gerado por IA.
+### 3. Instalar dependências
 
-### 3. (Opcional) Com a API key configurada
+```bash
+pip install -e .
+```
+
+> **Nota:** Não use `--break-system-packages`. Sempre instale dentro do venv.
+
+### 4. Registrar no Claude Code (global — funciona em qualquer projeto)
+
+Use `--` para separar as flags do `claude` dos argumentos do comando:
+
+```bash
+claude mcp add --scope user laravel-auditor -- /caminho/completo/para/laravel-auditor/.venv/bin/python -m laravel_auditor
+```
+> **Importante:** Use o caminho absoluto do Python do venv. Isso garante que o Claude Code
+> encontre o interpretador correto com todas as dependências instaladas.
+
+### 5. (Opcional) Com a API key para insights com IA
 
 ```bash
 claude mcp add --scope user laravel-auditor \
   --env ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY \
-  python -m laravel_auditor
+  -- /caminho/completo/para/laravel-auditor/.venv/bin/python -m laravel_auditor
 ```
+
+> **ANTHROPIC_API_KEY** é necessária apenas para os AI insights (roadmap gerado por IA).
+> Sem ela, o auditor ainda funciona normalmente (análise estática).
+
+### 6. Verificar a instalação
+
+```bash
+claude mcp list
+```
+
+Deve aparecer: `laravel-auditor: ... ✓ Connected`
 
 ---
 
@@ -126,6 +153,8 @@ laravel-auditor/
 ```bash
 cd laravel-auditor
 git pull
-pip install -e . --break-system-packages
-# Reiniciar Claude Code para recarregar o MCP server
+source .venv/bin/activate
+pip install -e .
 ```
+
+Depois reinicie o Claude Code para recarregar o MCP server.
